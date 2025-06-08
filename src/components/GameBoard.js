@@ -43,6 +43,7 @@ function GameBoard(props){
 				setCards([]);
 				writeScoreToBin("68442d7f8561e97a5020a4fe", {"clickCount":`${clickCount}`,"time":`${time}`});
 				setTime(0);
+				setClickCount(0);
 				setState("You won! Play again?");
 		}}else{
 			setTimeout(()=>{
