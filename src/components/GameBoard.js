@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
-import {shuffle} from "../utils/services.js";
+import {shuffle, fetchScoresFromBin, writeScoreToBin} from "../utils/services.js";
 import Card from "./Card.js";
 import Timer from "./Timer.js";
 import Counter from "./Counter.js";
+import Scoreboard from "./Scoreboard.js";
 
 function GameBoard(props){
 
@@ -11,6 +12,8 @@ function GameBoard(props){
 	const [cards, setCards]=useState([]);
 	const [firstFlippedCard, setFirstFlippedCard]=useState(null);
 	const [clickCount, setClickCount]=useState(0);
+	const [time, setTime]=useState(0);
+	const [scoreBoardDisplayed, setScoreBoardDisplayed]=useState(false);
 	const handleStart =async ()=>{
 		setState("loading");
 		const preloadedImages= await props.fetchImages(props.fetchImagesURLs());
@@ -38,6 +41,8 @@ function GameBoard(props){
 			if(cards.findIndex((element)=>element.isFound===false)===-1){
 				setImages([]);
 				setCards([]);
+				writeScoreToBin("68442d7f8561e97a5020a4fe", {"clickCount":`${clickCount}`,"time":`${time}`});
+				setTime(0);
 				setState("You won! Play again?");
 		}}else{
 			setTimeout(()=>{
@@ -48,13 +53,15 @@ function GameBoard(props){
 		}
 
 
-
+	}
+	const displayScores=()=>{
+		setScoreBoardDisplayed(true);
 	}
 
 	return(
 		<div className="game-board">
-		{state!=="playing"?<div className="button-container"><button id="start-button" onClick={handleStart}>{state==="home"?"Start":state}</button></div>:cards.map((value,index)=><Card key={value.id} onClick={handleClick} id={index} image={value}/>) }
-		<Timer/><Counter clickCount={clickCount} setClickCount={setClickCount}/>
+		{state!=="playing"?(scoreBoardDisplayed?<Scoreboard readScoresFromBin={fetchScoresFromBin} quit={()=>{setScoreBoardDisplayed(false)}}/>:<><div className="button-container"><button id="start-button" onClick={handleStart}>{state==="home"?"Start":state}</button></div><div className="button-container"><button id="scoreboard-button" onClick={displayScores}>Scoreboard</button></div></>):(<>{cards.map((value,index)=><Card key={value.id} onClick={handleClick} id={index} image={value}/>)}
+			<Timer time={time}  setTime={setTime}/><Counter clickCount={clickCount} setClickCount={setClickCount}/></>)}
 		</div>
 		)
 }

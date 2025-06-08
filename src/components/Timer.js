@@ -1,7 +1,6 @@
 import React, {useState,useEffect} from "react"
 
-function Timer(){
-	const [time,setTime]=useState(0);
+function Timer({time,setTime}){
 	useEffect(()=>{
 		setTimeout(()=>{
 			setTime(time+1)

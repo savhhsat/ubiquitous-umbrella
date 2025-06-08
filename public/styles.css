@@ -89,6 +89,7 @@ body{
 	align-self:center;
 
 }
+
 #start-button{
 	height:100%;
 	width:100%;
@@ -100,6 +101,20 @@ body{
 	
 }
 #start-button:hover{
+	transform:translateY(10px);
+	box-shadow:5px 2px 2px gray;
+}
+#scoreboard-button{
+	height:100%;
+	width:100%;
+	border:none;
+	background-color:lightskyblue;
+	box-shadow:15px 10px 5px gray;
+	border-radius:25px;
+	transition:all .5s;
+	
+}
+#scoreboard-button:hover{
 	transform:translateY(10px);
 	box-shadow:5px 2px 2px gray;
 }
